@@ -16,6 +16,10 @@ Or install it yourself as:
 
     $ gem install code_changelog
 
+And run:
+
+    $ rails generate code_changelog:migration
+    $ rake db:migrate
 ## Usage
 
 TODO: Write usage instructions here
