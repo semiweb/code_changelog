@@ -18,3 +18,5 @@ tmp
 
 #vim files
 *.swp
+
+.idea
