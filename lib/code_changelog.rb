@@ -1,6 +1,8 @@
 require 'code_changelog/version'
 
 module CodeChangelog
+  require "code_changelog/railtie" if defined?(Rails)
+
   class CodeChangelogEntry < ActiveRecord::Base
   end
 
@@ -23,7 +25,7 @@ module CodeChangelog
     def generate_content()
       content = ''
       @changelogs.each do |cl|
-        content << cl.content['description']
+        content << cl[:content]['description']
         content << "\n"
       end
       content
