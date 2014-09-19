@@ -18,7 +18,13 @@ Or install it yourself as:
 
 And run:
 
-    $ rails generate code_changelog:migration
+    Client side:
+    $ rails generate code_changelog:migration_client
+
+    Arma side:
+    $ rails generate code_changelog:migration_arma
+
+
     $ rake db:migrate
 ## Usage
 
