@@ -7,9 +7,8 @@ class CodeChangelogEntryMigration < ActiveRecord::Migration
   def change
     create_table :arma_code_changelog_entries do |t|
       t.string :filename
-      t.references :installation, index: true
+      t.string :directory, index: true
       t.boolean :committed, default: false
-      t.boolean :deleted, default: false
 
       t.timestamps
     end

@@ -10,7 +10,7 @@ module CodeChangelog
     end
 
     def changelogs_diff()
-      changelogs_files = Dir["#{@directory}*"].map{|path| {filename: File.basename(path), file_hash: `git hash-object #{path}`.strip}}
+      changelogs_files = Dir["#{@directory}*"].map{|path| {filename: File.basename(path), file_hash: Digest::MD5.file(path).hexdigest}}
 
       changelogs_sent = ClientCodeChangelogEntry.all
 
