@@ -51,7 +51,7 @@ module CodeChangelog
 
     def commit()
       @changelogs.each do |cl|
-        cl.update(committed: true)
+        cl.update(committed_at: DateTime.now)
       end
     end
 
