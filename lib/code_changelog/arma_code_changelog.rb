@@ -55,6 +55,10 @@ module CodeChangelog
       end
     end
 
+    def nb_uncommitted()
+      @changelogs.where(committed_at: nil).size
+    end
+
     #private
 
     def all_changelogs(changelogs_ids)
