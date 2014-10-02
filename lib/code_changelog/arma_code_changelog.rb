@@ -31,16 +31,16 @@ module CodeChangelog
             ArmaCodeChangelogEntry.create!(filename: changelog['filename'], directory: directory)
           end
         elsif changelog['status'] == 'deleted'
-          ArmaCodeChangelogEntry.where(directory: directory, filename: changelog['filename']).delete_all()
+          ArmaCodeChangelogEntry.where(directory: directory, filename: changelog['filename']).destroy_all()
           FileUtils.remove(file_path)
         end
       end
     end
 
     def generate_content()
-      content = 'Voici les dernière modifications depuis la dernière mise à jour :<br><br>'
+      content = "Voici les dernière modifications depuis la dernière mise à jour :\n\n"
       @changelogs.each do |cl|
-        content << simple_format(cl.content()['description'])
+        content << "#{cl.content()['description']}\n\n"
       end
       content
     end
