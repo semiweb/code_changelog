@@ -10,8 +10,16 @@ module CodeChangelog
       self.filename[/^\d{14}/, 0]
     end
 
-    def content()
-      YAML.load_file(File.join(Rails.root, self.directory, self.filename))
+    def yaml_content()
+      @content ||= YAML.load_file(File.join(Rails.root, self.directory, self.filename))
+    end
+
+    def description()
+      self.yaml_content()['description']
+    end
+
+    def affect()
+      self.yaml_content()['affect']
     end
   end
 
@@ -40,7 +48,7 @@ module CodeChangelog
     def generate_content()
       content = "Voici les dernière modifications depuis la dernière mise à jour :\n\n"
       @changelogs.each do |cl|
-        content << "#{cl.content()['description']}\n\n"
+        content << "#{cl.description}\n\n"
       end
       content
     end
@@ -51,7 +59,7 @@ module CodeChangelog
 
     def commit()
       @changelogs.each do |cl|
-        cl.update(committed_at: DateTime.now)
+        cl.update_attributes!(committed_at: DateTime.now)
       end
     end
 
