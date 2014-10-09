@@ -5,7 +5,7 @@ module CodeChangelog
   end
 
   class ClientCodeChangelogFile
-    attr_accessor :file_hash, :filename, :content
+    attr_accessor :file_hash, :filename
     def initialize file_path
       @file_path = file_path
       @filename  = File.basename(file_path)
@@ -66,10 +66,10 @@ module CodeChangelog
         ClientCodeChangelogEntry.create!(filename: changelog.filename, file_hash: changelog.file_hash)
       end
       @modified_logs.each do |changelog|
-        ClientCodeChangelogEntry.find_by_filename(changelog.filename).update_attributes!(file_hash: changelog.file_hash)
+        ClientCodeChangelogEntry.find_by_filename!(changelog.filename).update_attributes!(file_hash: changelog.file_hash)
       end
       @deleted_logs.each do |changelog|
-        ClientCodeChangelogEntry.find_by_filename(changelog.filename).destroy
+        ClientCodeChangelogEntry.find_by_filename!(changelog.filename).destroy
       end
     end
 
@@ -90,20 +90,19 @@ module CodeChangelog
   class ClientCodeChangelog
     def initialize()
       @directory = 'doc/changelog/'
+
+      changelogs_files = Dir["#{@directory}*"].map{|file_path| ClientCodeChangelogFile.new(file_path)}
+
+      @changelog_collection = ClientCodeChangelogCollection.new
+      @changelog_collection.add(changelogs_files)
     end
 
     def changelogs_diff()
-      changelogs_files     = Dir["#{@directory}*"].map{|file_path| ClientCodeChangelogFile.new(file_path)}
-      changelog_collection = ClientCodeChangelogCollection.new
-      changelog_collection.add(changelogs_files)
-      changelog_collection
+      @changelog_collection.format
     end
 
-    def get_and_commit()
-      changelogs_diff = self.changelogs_diff
-      changelogs_diff.commit
-      changelogs_diff.format
+    def commit()
+      @changelog_collection.commit
     end
-
   end
 end

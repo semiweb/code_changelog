@@ -29,18 +29,20 @@ module CodeChangelog
       @changelogs = self.all_changelogs(changelogs_ids)
     end
 
-    def self.update_directory(directory, changelogs)
-      changelogs.each do |changelog|
-        file_path = File.join(directory, changelog['filename'])
-        if changelog['status'] == 'new' || changelog['status'] == 'modified'
+    def self.update_directory(directory, changelogs_hashes)
+      changelogs_hashes.each do |changelog_hash|
+        file_path = File.join(directory, changelog_hash['filename'])
+        if changelog_hash['status'] == 'new' || changelog_hash['status'] == 'modified'
           FileUtils.mkdir_p(directory)
-          File.open(file_path, 'w') { |file| file.write(changelog['content']) }
-          if changelog['status'] == 'new'
-            ArmaCodeChangelogEntry.create!(filename: changelog['filename'], directory: directory)
+          File.open(file_path, 'w') { |file| file.write(changelog_hash['content']) }
+          if changelog_hash['status'] == 'new'
+            if not ArmaCodeChangelogEntry.exists?(filename: changelog_hash['filename'], directory: directory)
+              ArmaCodeChangelogEntry.create!(filename: changelog_hash['filename'], directory: directory)
+            end
           end
-        elsif changelog['status'] == 'deleted'
-          ArmaCodeChangelogEntry.where(directory: directory, filename: changelog['filename']).destroy_all()
-          FileUtils.remove(file_path)
+        elsif changelog_hash['status'] == 'deleted'
+          ArmaCodeChangelogEntry.where(directory: directory, filename: changelog_hash['filename']).destroy_all()
+          FileUtils.rm_f(file_path)
         end
       end
     end
