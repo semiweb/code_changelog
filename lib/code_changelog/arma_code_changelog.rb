@@ -11,7 +11,7 @@ module CodeChangelog
     end
 
     def yaml_content()
-      @content ||= YAML.load_file(File.join(Rails.root, self.directory, self.filename))
+      @content ||= YAML.load_file(File.join(self.directory, self.filename))
     end
 
     def description()
