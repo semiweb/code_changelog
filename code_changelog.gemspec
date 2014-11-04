@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = CodeChangelog::VERSION
   spec.authors       = ["Alexis François"]
   spec.email         = ["alexis.francois.eu@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = ''
+  spec.summary       = ''
+  spec.homepage      = ''
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
