@@ -1,7 +1,5 @@
 # encoding: utf-8
 
-include ActionView::Helpers::TextHelper
-
 module CodeChangelog
   require "code_changelog/railtie" if defined?(Rails)
 
