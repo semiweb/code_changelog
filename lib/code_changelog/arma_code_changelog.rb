@@ -9,7 +9,14 @@ module CodeChangelog
     end
 
     def yaml_content()
-      @content ||= YAML.load_file(File.join(self.directory, self.filename))
+
+      if self.directory.to_s.start_with?('.')
+        path = Rails.root.join(self.directory, self.filename)
+      else
+        path = File.join(self.directory, self.filename)
+      end
+
+      @content ||= YAML.load_file(path)
     end
 
     def description()
